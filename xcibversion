@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
-USAGE="Usage:\n${0##*/} [--interactive|-i] [--build=SPECIFIC_BUILD] [--path=PATH][--dry-run]"
+USAGE="Usage:\n${0##*/} [--interactive|-i] [--build=SPECIFIC_BUILD] [--path=PATH] [--dry-run]"
 arguments=""
 WORKDIR="."
 for i in "$@"
 do
   case $i in
     --help)
-      printf "${USAGE}"
+      printf "${USAGE}\n"
+      exit
       ;;
     -i|--interactive)
       INTERACTIVE=1
@@ -48,9 +49,13 @@ else
 fi
 }
 
-for file in `find ${WORKDIR} -name "Info.plist"` ; do
-  value=`plutil -extract CFBundleVersion xml1 -o - $file`
+
+find $WORKDIR -name "Info.plist" -print0 |
+while IFS= read -r -d '' file; do
+
+  value=`plutil -extract CFBundleVersion xml1 -o - "$file"`
   build=`echo ${value} | xmllint --xpath "//string/text()" -`
+  
   re='^[0-9]+$'
   if [[ $build =~ $re ]] ; then
     if [ ! -z "${SPECIFIC_BUILD}" ] ; then
@@ -58,20 +63,20 @@ for file in `find ${WORKDIR} -name "Info.plist"` ; do
     else
       new_build=$((build + 1))
     fi
-    echo "build: ${build} New: ${new_build}"
+    echo "> current: ${build} new: ${new_build}"
     if [ ! -z "${INTERACTIVE}" ] ; then
       while true; do
-        read -p "Update File: ${file} - fromm build:${build} to: ${new_build}?[y|n|stop] " answer
+        read -p "Update File: ${file} - from build:${build} to: ${new_build}? [y|n|stop] " answer
         case ${answer:0:1} in
-          Y|y ) _execute "plutil -replace CFBundleVersion -string "${new_build}" ${file}" ; break;;
+          Y|y ) _execute "plutil -replace CFBundleVersion -string \"${new_build}\" \"${file}\"" ; break;;
           N|n ) break;;
           S|s ) exit;;
           * ) echo "Please answer yes or no.";;
         esac
       done
     else
-      _execute "plutil -replace CFBundleVersion -string "${new_build}" ${file}"
-      echo "Updated File: ${file} - fromm build:${build} to: ${new_build}" 
+      _execute "plutil -replace CFBundleVersion -string \"${new_build}\" \"${file}\""
+      echo "Updated File: ${file} - from build:${build} to: ${new_build}" 
     fi
   fi
 done

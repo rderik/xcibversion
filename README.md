@@ -8,7 +8,7 @@ The script searches the `Info.plist` in the current path and increases the build
 
 ```bash
 Usage:
-xcibversion [--interactive|-i] [--build=SPECIFIC_BUILD] [--path=PATH][--dry-run]
+xcibversion [--interactive|-i] [--build=SPECIFIC_BUILD] [--path=PATH] [--dry-run]
 ```
 
 ## Interactive
