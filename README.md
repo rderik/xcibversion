@@ -4,6 +4,10 @@ This script automates the increment of Build numbers in Xcode projects.
 
 The script searches the `Info.plist` in the current path and increases the build version number. 
 
+If you want to read a more detailed explanation check the article here:
+
+[https://rderik.com/blog/automating-build-and-testflight-upload-for-simple-ios-apps/](https://rderik.com/blog/automating-build-and-testflight-upload-for-simple-ios-apps/)
+
 # Usage
 
 ```bash
