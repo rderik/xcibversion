@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-USAGE="Usage:\n${0##*/} [--interactive|-i] [--build=SPECIFIC_BUILD] [--path=PATH] [--dry-run]"
+USAGE="Usage:\n${0##*/} --path=PATH [--interactive|-i] [--build=SPECIFIC_BUILD] [--dry-run]"
 arguments=""
-WORKDIR="."
 for i in "$@"
 do
   case $i in
@@ -36,6 +35,10 @@ do
       ;;
   esac
 done
+if [ -z ${WORKDIR} ] ; then
+  printf "ERROR: Missing path.\n\n${USAGE}\n"
+  exit 1
+fi
 if [ ! -z "${DEBUG}" ] ; then
   echo "INTERACTIVE = ${INTERACTIVE}"
   echo "SPECIFIC_BUILD = ${SPECIFIC_BUILD}"

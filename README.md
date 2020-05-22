@@ -12,7 +12,7 @@ If you want to read a more detailed explanation, you can check the article here:
 
 ```bash
 Usage:
-xcibversion [--interactive|-i] [--build=SPECIFIC_BUILD] [--path=PATH] [--dry-run]
+xcibversion --path=PATH [--interactive|-i] [--build=SPECIFIC_BUILD] [--dry-run]
 ```
 
 ## Interactive
@@ -26,13 +26,13 @@ Using the `--build` argument, you can specify the build number the replace the c
 For example:
 
 ```bash
-$ ./xcibversion --build=15  --path=./myProject/
+$ ./xcibversion --path=./myProject/ --build=15
 ```
 
 
 ## Define the path to search for `Info.plist` files
 
-If `--path` argument is used the script will search in that path for `Info.plist` files for processing.
+The `--path` argument is mandatory. The script will search in that path for `Info.plist` files for processing.
 
 ## Dry run
 
