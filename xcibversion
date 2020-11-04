@@ -53,7 +53,7 @@ fi
 }
 
 
-find $WORKDIR -name "Info.plist" -print0 |
+find $WORKDIR -name build -prune -false -o -name "Info.plist" -print0 |
 while IFS= read -r -d '' file; do
 
   value=`plutil -extract CFBundleVersion xml1 -o - "$file"`
